@@ -1,5 +1,6 @@
 # My-rendering-engine
 This is my software rendering engine using rasterisation, written in Rust
+the vast majority of the rendering code is in src/modules/rendu.rs
 
 ## Features
 - 3D movement
