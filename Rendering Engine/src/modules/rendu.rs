@@ -676,12 +676,10 @@ pub fn rasterisation_monocoeur(vecmeshes:&Vec<Vec<Mesh>>, camera:&Camera,texture
                                             x2 = LARGEUR_IMAGE
                                         }
                                         for x in x1.to_int_unchecked::<i32>()..x2.to_int_unchecked::<i32>() {
-                                            zbuffer_a = zbuffer.get_unchecked_mut(posbuf);
-                                            if zbuffer_a > &mut d1 {
-                                                *zbuffer_a = d1;
-                                                index_texture = std::cmp::min(yi.to_int_unchecked::<usize>() * largeur_texture_usize + xi.to_int_unchecked::<usize>(),texture_len);
-                                                col = *texture_data.get_unchecked(index_texture);
-                                                framebuffer[posbuf..posbuf+3].copy_from_slice(&[(col.0 as f32 * triangle_lumiere.0).to_int_unchecked(), (col.1 as f32 * triangle_lumiere.1).to_int_unchecked(), (col.2 as f32 * triangle_lumiere.2).to_int_unchecked()]);
+                                            if zbuffer.get_unchecked(posbuf) > &d1 {
+                                                *zbuffer.get_unchecked_mut(posbuf) = d1;
+                                                col = *texture_data.get_unchecked(std::cmp::min(yi.to_int_unchecked::<usize>() * largeur_texture_usize + xi.to_int_unchecked::<usize>(),texture_len));
+                                                framebuffer.get_unchecked_mut(posbuf..posbuf+3).copy_from_slice(&[(col.0 as f32 * triangle_lumiere.0).to_int_unchecked(), (col.1 as f32 * triangle_lumiere.1).to_int_unchecked(), (col.2 as f32 * triangle_lumiere.2).to_int_unchecked()]);
                                             }
                                             posbuf += 3;
                                             xi += dxim;
@@ -755,10 +753,9 @@ pub fn rasterisation_monocoeur(vecmeshes:&Vec<Vec<Mesh>>, camera:&Camera,texture
                                             x2 = LARGEUR_IMAGE
                                         }
                                         for x in x1.to_int_unchecked::<i32>()..x2.to_int_unchecked::<i32>() {
-                                            zbuffer_a = zbuffer.get_unchecked_mut(posbuf);
-                                            if zbuffer_a > &mut d1 {
-                                                *zbuffer_a = d1;
-                                                framebuffer[posbuf..posbuf+3].copy_from_slice(&col_src);
+                                            if zbuffer.get_unchecked(posbuf) > &d1 {
+                                                *zbuffer.get_unchecked_mut(posbuf) = d1;
+                                                framebuffer.get_unchecked_mut(posbuf..posbuf+3).copy_from_slice(&col_src);
                                             }
                                             posbuf += 3;
                                             d1 += deltad;
